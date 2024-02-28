@@ -33,7 +33,7 @@
                             <span style="white-space: pre-line">{{$item}}</span><br>
                         @endforeach
                     </p>
-                    <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a href="https://applicant.grants.amp.gefundp.rea.gov.ng/" style="color:#153643;text-decoration:underline;">Click here to view your portal!</a></p>
+                    <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a href="https://applicant.gcip.rea.gov.ng/" style="color:#153643;text-decoration:underline;">Click here to view your portal!</a></p>
                   </td>
                 </tr>
               </table>
@@ -45,7 +45,7 @@
                 <tr>
                   <td style="padding:0;width:50%;" align="left">
                     <p style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#ffffff;">
-                      &reg; <a href="https://grants.amp.gefundp.rea.gov.ng/" target="_blank" style="color:#ffffff;text-decoration:underline;">RURAL ELECTRIFICATION AGENCY<br/></a>
+                      &reg; <a href="https://gcip.rea.gov.ng/" target="_blank" style="color:#ffffff;text-decoration:underline;">Global Cleantech Innovation Programme<br/></a>
                     </p>
                   </td>
                   <td style="padding:0;width:50%;" align="right">

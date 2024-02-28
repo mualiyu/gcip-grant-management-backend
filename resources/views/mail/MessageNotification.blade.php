@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="x-apple-disable-message-reformatting">
-  <title>REA - Grant System</title>
+  <title>REA - Global Cleantech Innovation Programme</title>
   <style>
     table, td, div, h1, p {font-family: Arial, sans-serif;}
   </style>
@@ -28,7 +28,7 @@
                   <td style="padding:0 0 36px 0;color:#153643;">
                     <h1 style="font-size:24px;margin:0 0 20px 0;font-family:Arial,sans-serif;">{{ $mailData['title'] }}</h1>
                     <p style="margin:0 0 12px 0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;">{{ $mailData['body'] }}</p>
-                    <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a href="https://applicant.grants.amp.gefundp.rea.gov.ng/" style="color:#153643;text-decoration:underline;">Click here to view your portal!</a></p>
+                    <p style="margin:0;font-size:16px;line-height:24px;font-family:Arial,sans-serif;"><a href="https://applicant.gcip.rea.gov.ng/" style="color:#153643;text-decoration:underline;">Click here to view your portal!</a></p>
                   </td>
                 </tr>
               </table>
@@ -40,7 +40,7 @@
                 <tr>
                   <td style="padding:0;width:50%;" align="left">
                     <p style="margin:0;font-size:14px;line-height:16px;font-family:Arial,sans-serif;color:#ffffff;">
-                      &reg; <a href="https://grants.amp.gefundp.rea.gov.ng/" target="_blank" style="color:#ffffff;text-decoration:underline;">RURAL ELECTRIFICATION AGENCY<br/></a>
+                      &reg; <a href="https://gcip.rea.gov.ng/" target="_blank" style="color:#ffffff;text-decoration:underline;">Global Cleantech Innovation Programme<br/></a>
                     </p>
                   </td>
                   <td style="padding:0;width:50%;" align="right">

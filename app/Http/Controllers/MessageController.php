@@ -196,7 +196,7 @@ class MessageController extends Controller
                 'body' => "Dear Sir, \nYou have a new message from ".$request->user()->name."(".$request->user()->email.") for the ".$program->name." program, \nThank you.",
             ];
 
-            Mail::to("amp@rea.gov.ng")->send(new MessageNotificationMail($mailData));
+            // Mail::to("amp@rea.gov.ng")->send(new MessageNotificationMail($mailData));
 
             return response()->json([
                 'status' => true,
