@@ -17,10 +17,10 @@ class ApplicantController extends Controller
 {
     public function register(Request $request)
     {
-        return response()->json([
-            'status' => false,
-            'message' => "Sorry, Registration is closed.",
-        ], 422);
+        // return response()->json([
+        //     'status' => false,
+        //     'message' => "Sorry, Registration is closed.",
+        // ], 422);
 
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
@@ -32,8 +32,8 @@ class ApplicantController extends Controller
             'address'=>'required',
             'cac_certificate' => 'nullable',
             'tax_clearance_certificate' => 'nullable',
-            'has_designed'=>'required',
-            'has_operated'=>'required',
+            'has_designed'=>'nullable',
+            'has_operated'=>'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -101,7 +101,7 @@ class ApplicantController extends Controller
             ];
 
             Mail::to($user->email)->send(new MessageNotificationMail($mailData));
-            Mail::to("amp@rea.gov.ng")->send(new MessageNotificationMail($adminMailData));
+            // Mail::to("amp@rea.gov.ng")->send(new MessageNotificationMail($adminMailData));
         }
 
         return response()->json([
