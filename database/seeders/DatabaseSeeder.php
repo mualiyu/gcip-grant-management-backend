@@ -18,32 +18,5 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-
-        $regions = [
-            [
-                'name' => 'North Central'
-            ],
-            [
-                'name' => 'South East'
-            ],
-            [
-                'name' => 'North East'
-            ],
-            [
-                'name' => 'South South'
-            ],
-            [
-                'name' => 'North West'
-            ],
-            [
-                'name' => 'South West'
-            ]
-        ];
-
-        foreach ($regions as $r) {
-             \App\Models\Region::create([
-                 'name'=>$r['name'],
-             ]);
-        }
     }
 }

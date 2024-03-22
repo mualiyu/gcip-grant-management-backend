@@ -25,16 +25,6 @@ class Program extends Model
         return $this->hasMany(Lot::class, "program_id", 'id');
     }
 
-    public function sublots(): HasMany
-    {
-        return $this->hasMany(SubLot::class, "program_id", 'id');
-    }
-
-    public function requirements(): HasMany
-    {
-        return $this->hasMany(ProgramRequirement::class, "program_id", 'id');
-    }
-
     public function documents(): HasMany
     {
         return $this->hasMany(ProgramDocument::class, "program_id", 'id');
@@ -43,11 +33,6 @@ class Program extends Model
     public function stages(): HasMany
     {
         return $this->hasMany(ProgramStage::class, "program_id", 'id');
-    }
-
-    public function statuses(): HasMany
-    {
-        return $this->hasMany(ProgramStatus::class, "program_id", 'id');
     }
 
     public function applications(): HasMany

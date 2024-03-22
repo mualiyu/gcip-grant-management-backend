@@ -25,11 +25,6 @@ class Application extends Model
         'pre_qualification_status',
     ];
 
-    public function sublots(): BelongsToMany
-    {
-        return $this->belongsToMany(SubLot::class);
-    }
-
     public function applicant(): BelongsTo
     {
         return $this->belongsTo(Applicant::class, "applicant_id", 'id');

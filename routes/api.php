@@ -59,10 +59,10 @@ Route::prefix('admin')->group(function () {
         Route::get('list', [\App\Http\Controllers\ProgramController::class, 'showAll']);
 
         # get
-        Route::get('info', [\App\Http\Controllers\ProgramController::class, 'show']);
-        Route::get('info/v2', [\App\Http\Controllers\ProgramController::class, 'showObj']);
+        Route::get('info', [\App\Http\Controllers\ProgramController::class, 'showObj']);
+        // Route::get('info/v2', [\App\Http\Controllers\ProgramController::class, 'showObj']);
 
-        // Applications
+        // Applications Not done yet
         Route::middleware('auth:sanctum')->prefix('applications')->group(function () {
             #Get application
             Route::get('getAll', [\App\Http\Controllers\ProgramController::class, 'getApplications']);
@@ -73,23 +73,6 @@ Route::prefix('admin')->group(function () {
 
             // Route::get('download/applicationDocuments', [\App\Http\Controllers\ApplicationController::class, 'downloadApplicationDocuments']);
         });
-
-    });
-
-    // Region
-    Route::middleware('auth:sanctum')->prefix('regions')->group(function () {
-        # get
-        Route::get('', [\App\Http\Controllers\RegionController::class, 'showAll']);
-
-    });
-
-    // Category
-    Route::middleware('auth:sanctum')->prefix('category')->group(function () {
-        # store
-        Route::post('create', [\App\Http\Controllers\CategoryController::class, 'create']);
-
-        # get
-        Route::get('list', [\App\Http\Controllers\CategoryController::class, 'showAll']);
 
     });
 
@@ -196,26 +179,11 @@ Route::prefix('applicant')->group(function () {
         Route::get('list', [\App\Http\Controllers\ProgramController::class, 'showAll']);
 
         # get
-        Route::get('info', [\App\Http\Controllers\ProgramController::class, 'show']);
-        Route::get('info/v2', [\App\Http\Controllers\ProgramController::class, 'showObj']);
+        Route::get('info', [\App\Http\Controllers\ProgramController::class, 'showObj']);
+        // Route::get('info/v2', [\App\Http\Controllers\ProgramController::class, 'showObj']);
 
     });
 
-    // Region
-    Route::middleware('auth:sanctum')->prefix('regions')->group(function () {
-        # get
-        Route::get('', [\App\Http\Controllers\RegionController::class, 'showAll']);
-
-    });
-
-    // Category
-    Route::middleware('auth:sanctum')->prefix('category')->group(function () {
-        # store
-        Route::post('create', [\App\Http\Controllers\CategoryController::class, 'create']);
-
-        # get
-        Route::get('list', [\App\Http\Controllers\CategoryController::class, 'showAll']);
-    });
 
     // Application
     Route::middleware('auth:sanctum')->prefix('application')->group(function () {

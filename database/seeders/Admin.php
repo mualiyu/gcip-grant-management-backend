@@ -18,7 +18,7 @@ class Admin extends Seeder
             'email' => 'mualiyuoox@gmail.com',
             'phone' => "2348167236629",
             'username' => 'admin',
-            'password' => Hash::make('Test1234'), //Admin password
+            'password' => Hash::make('GCIP@next.2024'), //Admin password
         ]);
     }
 }

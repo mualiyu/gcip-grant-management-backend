@@ -18,9 +18,7 @@ class Lot extends Model
      */
     protected $fillable = [
         'name',
-        'region_id',
         'program_id',
-        'category_id',
     ];
 
     public function program(): BelongsTo
@@ -28,18 +26,5 @@ class Lot extends Model
         return $this->belongsTo(Program::class, "program_id", 'id');
     }
 
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class, "category_id", 'id');
-    }
 
-    public function region(): BelongsTo
-    {
-        return $this->belongsTo(Region::class, "region_id", 'id');
-    }
-
-    public function sublots(): HasMany
-    {
-        return $this->hasMany(SubLot::class, "lot_id", 'id');
-    }
 }

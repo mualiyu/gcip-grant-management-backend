@@ -44,13 +44,6 @@ class ProgramController extends Controller
 
             $prog = $request->program;
 
-
-            $stages = $prog['stages'];
-            // $documents = $prog['uploads'];
-            // $statuses = $prog['status'];
-            // $milestones = $prog['milestones'];
-
-
             $program = Program::create([
                 'name' => $prog['programName'],
                 'description' => $prog['programDescription'],
@@ -63,31 +56,6 @@ class ProgramController extends Controller
                     foreach ($lots as $key => $l) {
                         $lot = Lot::create([
                             'name' => $l['name'],
-                            'category_id' => $l['category'],
-                            'region_id' => $l['region'],
-                            'program_id' => $program->id,
-                        ]);
-
-                        foreach ($l['subLots'] as $k => $sl) {
-                            SubLot::create([
-                                'name' => $sl['name'],
-                                'category_id' => $sl['category'],
-                                'lot_id' => $lot->id,
-                                'program_id' => $program->id,
-                            ]);
-                        }
-                    }
-                }
-            }
-
-            // Adding Requirements
-            if (array_key_exists('requirements', $prog)) {
-                $requirements = $prog['requirements'];
-                if (count($requirements)>0) {
-                    foreach ($requirements as $key => $rq) {
-                        $requirement = ProgramRequirement::create([
-                            'name' => $rq['name'],
-                            'type' => $rq['type'],
                             'program_id' => $program->id,
                         ]);
                     }
@@ -128,33 +96,15 @@ class ProgramController extends Controller
                 }
             }
 
-            // Adding Statuses
-            if (array_key_exists('status', $prog)) {
-                $statuses = $prog['status'];
-                if (count($statuses)>0) {
-                    foreach ($statuses as $ks => $sta) {
-                        $d = ProgramStatus::create([
-                            'name' => $sta['name'],
-                            'isInitial' => $sta['isInitial'],
-                            'isEditable' => $sta['isEditable'],
-                            'color' => $sta['color'],
-                            'program_id' => $program->id,
-                        ]);
-                    }
-                }
-            }
-
             return response()->json([
                 'status' => true,
                 'message' => "Successfully created Program.....",
                 'data' => [
                     'Program' => Program::where('id', '=', $program->id)
-                                    ->with('lots', 'sublots')
+                                    ->with('lots')
                                     // ->with('sublots')
-                                    ->with('requirements')
                                     ->with('documents')
-                                    ->with('stages')
-                                    ->with('statuses')->get()[0],
+                                    ->with('stages')->get()[0],
                 ],
             ]);
         }else{
@@ -220,12 +170,9 @@ class ProgramController extends Controller
                 'status' => true,
                 'data' => [
                     'programs' => Program::where('id', '=', $request->programId)
-                                    ->with('lots', 'sublots')
-                                    // ->with('sublots')
-                                    ->with('requirements')
+                                    ->with('lots')
                                     ->with('documents')
-                                    ->with('stages')
-                                    ->with('statuses')->get()[0],
+                                    ->with('stages')->get()[0],
                 ],
             ]);
         // }else{
@@ -256,41 +203,20 @@ class ProgramController extends Controller
                     "programName"=>$prog->name,
                     "programDescription"=>$prog->description,
                     "lots"=>array(),
-                    "requirements"=>[],
                     "stages"=>[],
                     "uploads"=>[],
-                    "status"=>[],
                 ],
             ];
 
             foreach ($prog->lots as $key => $l) {
                 $al = [
                     "name"=>$l->name,
-                    "region"=>$l->region_id,
-                    "category"=>$l->category_id,
-                    "subLots"=>[],
                 ];
-
-                foreach ($l->sublots as $key => $sl) {
-                    $as = [
-                        "id"=>$sl->id,
-                        "name"=>$sl->name,
-                        "category"=>$sl->category_id
-                    ];
-
-                    array_push($al['subLots'],$as);
-                }
 
                 array_push($arr['program']['lots'],$al);
             }
 
-            foreach ($prog->requirements as $key => $r) {
-                $ar = [
-                    "name"=>$r->name,
-                    "type"=>$r->type,
-                ];
-                array_push($arr['program']['requirements'],$ar);
-            }
+
 
             foreach ($prog->stages as $key => $s) {
                 $ass = [
@@ -317,16 +243,6 @@ class ProgramController extends Controller
                     "file"=>$dd->url,
                 ];
                 array_push($arr['program']['uploads'],$auu);
-            }
-
-            foreach ($prog->statuses as $key => $ss) {
-                $aus = [
-                    "name"=>$ss->name,
-                    "isEditable"=>$ss->isInitial,
-                    "isInitial"=>$ss->isEditable,
-                    "color"=>$ss->color,
-                ];
-                array_push($arr['program']['status'],$aus);
             }
 
             return response()->json([
