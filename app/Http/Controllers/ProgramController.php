@@ -210,6 +210,7 @@ class ProgramController extends Controller
 
             foreach ($prog->lots as $key => $l) {
                 $al = [
+                    "id"=>$l->id,
                     "name"=>$l->name,
                 ];
 

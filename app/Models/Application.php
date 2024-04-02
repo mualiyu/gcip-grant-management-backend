@@ -25,6 +25,11 @@ class Application extends Model
         'pre_qualification_status',
     ];
 
+    public function lots(): BelongsToMany
+    {
+        return $this->belongsToMany(Lot::class);
+    }
+
     public function applicant(): BelongsTo
     {
         return $this->belongsTo(Applicant::class, "applicant_id", 'id');
@@ -35,34 +40,9 @@ class Application extends Model
         return $this->belongsTo(Program::class, "program_id", 'id');
     }
 
-    public function app_profile(): HasOne
-    {
-        return $this->hasOne(ApplicationProfile::class, "application_id", 'id');
-    }
-
-    public function app_staffs(): HasMany
-    {
-        return $this->hasMany(ApplicationCv::class, "application_id", 'id');
-    }
-
     public function app_decisions(): HasMany
     {
         return $this->hasMany(ApplicationDecision::class, "application_id", 'id');
-    }
-
-    public function app_projects(): HasMany
-    {
-        return $this->hasMany(ApplicationProject::class, "application_id", 'id');
-    }
-
-    public function app_financials(): HasMany
-    {
-        return $this->hasMany(ApplicationFinancialInfo::class, "application_id", 'id');
-    }
-
-    public function app_financial_depts(): HasMany
-    {
-        return $this->hasMany(ApplicationFinancialDebtInfo::class, "application_id", 'id');
     }
 
     public function app_document(): HasMany

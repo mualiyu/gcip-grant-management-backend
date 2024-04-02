@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('application_memberships', function (Blueprint $table) {
+        Schema::create('application_lot', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('application_cv_id');
-            $table->string('rank')->nullable();
-            $table->string('state')->nullable();
-            $table->string('date')->nullable();
-            $table->timestamps();
+            // $table->timestamps();
+            $table->unsignedBigInteger('application_id')->unsigned();
+            $table->unsignedBigInteger('lot_id')->unsigned();
+            $table->string('choice')->nullable();
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('application_memberships');
+        Schema::dropIfExists('application_sub_lot');
     }
 };

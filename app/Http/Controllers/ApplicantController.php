@@ -99,7 +99,7 @@ class ApplicantController extends Controller
                 'title' => 'Your registration is successful.',
                 'body'=> "A company has signed up on the grant management platform. Please access the portal to review the submitted documents and proceed to either accept or reject the user's application for portal access.",
             ];
-
+            // return $pass;
             Mail::to($user->email)->send(new MessageNotificationMail($mailData));
             // Mail::to("amp@rea.gov.ng")->send(new MessageNotificationMail($adminMailData));
         }
@@ -672,7 +672,7 @@ class ApplicantController extends Controller
             if ($user) {
                 $applicant = Applicant::find($request->applicant_id);
 
-
+                // return $pass;
                 if ($request->status == "2") {
                     $mailData = [
                         'title' => 'Your registration approved by an Administrator.',

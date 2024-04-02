@@ -73,7 +73,6 @@ Route::prefix('admin')->group(function () {
 
             // Route::get('download/applicationDocuments', [\App\Http\Controllers\ApplicationController::class, 'downloadApplicationDocuments']);
         });
-
     });
 
     // Applicant
@@ -84,7 +83,6 @@ Route::prefix('admin')->group(function () {
         # get list
         Route::get('list', [\App\Http\Controllers\ApplicantController::class, 'showAllApplicant']);
         Route::post('accept', [\App\Http\Controllers\ApplicantController::class, 'acceptApplicant']);
-
     });
 
     // Messages
@@ -132,7 +130,6 @@ Route::prefix('admin')->group(function () {
     Route::middleware('auth:sanctum')->get('proposals/{program}', [\App\Http\Controllers\ProjectController::class, 'getAllProposals']);
     Route::middleware('auth:sanctum')->get('proposals/{program}/{applicantproposal}', [\App\Http\Controllers\ProjectController::class, 'getOneProposal']);
     Route::get('proposals/{program}/{applicantproposal}/downloadzip', [\App\Http\Controllers\ProjectController::class, 'downloadProposalDocs']);
-
 });
 
 
@@ -172,7 +169,7 @@ Route::prefix('applicant')->group(function () {
     });
 
 
-     // programs
+    // programs
     Route::middleware('auth:sanctum')->prefix('program')->group(function () {
 
         # get
@@ -191,33 +188,34 @@ Route::prefix('applicant')->group(function () {
         Route::post('create/initial', [\App\Http\Controllers\ApplicationController::class, 'createInitial']);
 
         # add profile
-        Route::post('create/profile', [\App\Http\Controllers\ApplicationController::class, 'createProfile']);
-        Route::post('update/profile', [\App\Http\Controllers\ApplicationController::class, 'createProfileUpdate']);
-        Route::post('create/profile/upload', [\App\Http\Controllers\ApplicationController::class, 'uploadProfile']);
+        Route::post('create/eligibility_criteria', [\App\Http\Controllers\ApplicationController::class, 'createEligibility_criteria']);
+        Route::post('update/eligibility_criteria/{applicationEligibility}', [\App\Http\Controllers\ApplicationController::class, 'updateEligibility_criteria']);
 
-        # add Staff
-        Route::post('create/staff', [\App\Http\Controllers\ApplicationController::class, 'createStaff']);
-        Route::post('create/staff/upload', [\App\Http\Controllers\ApplicationController::class, 'uploadStaff']);
-
-        # add Reference Projects
-        Route::post('create/projects', [\App\Http\Controllers\ApplicationController::class, 'createProject']);
-        Route::post('create/projects/upload', [\App\Http\Controllers\ApplicationController::class, 'uploadProject']);
-
-        # add Financial Info
-        Route::post('create/financial', [\App\Http\Controllers\ApplicationController::class, 'createFinancial']);
-        Route::post('create/financial/upload', [\App\Http\Controllers\ApplicationController::class, 'uploadFinancial']);
-
-        # add Reference Projects
+        // # Upload documents
         Route::post('create/documents', [\App\Http\Controllers\ApplicationController::class, 'createDocument']);
         Route::post('create/documents/upload', [\App\Http\Controllers\ApplicationController::class, 'uploadDocument']);
+
+        # add Staff
+        Route::post('create/company_info', [\App\Http\Controllers\ApplicationController::class, 'createCompanyInfo']);
+        Route::post('update/company_info/{applicationCompanyInfo}', [\App\Http\Controllers\ApplicationController::class, 'updateCompanyInfo']);
+        Route::post('create/company_info/upload', [\App\Http\Controllers\ApplicationController::class, 'uploadCompanyInfo']);
+
+        # add Reference Projects
+        Route::post('create/business_proposal', [\App\Http\Controllers\ApplicationController::class, 'createBusinessProposal']);
+        Route::post('update/business_proposal/{applicationBusinessProposal}', [\App\Http\Controllers\ApplicationController::class, 'updateBusinessProposal']);
+        Route::post('create/business_proposal/upload', [\App\Http\Controllers\ApplicationController::class, 'uploadBusinessPro']);
 
         # submit
         Route::post('submit', [\App\Http\Controllers\ApplicationController::class, 'submit']);
 
-        Route::post('accept/pre-qualification', [\App\Http\Controllers\ApplicationController::class, 'pre_qualification']);
-
         #Get application
         Route::get('get', [\App\Http\Controllers\ApplicationController::class, 'getApplication']);
+
+        // ---------------------------------------------
+
+
+        // Route::post('accept/pre-qualification', [\App\Http\Controllers\ApplicationController::class, 'pre_qualification']);
+
 
         #Get application progress
         Route::get('get-progress', [\App\Http\Controllers\ApplicationController::class, 'getApplicationProgress']);

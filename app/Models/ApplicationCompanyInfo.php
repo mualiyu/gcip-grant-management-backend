@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ApplicationSubLot extends Model
+class ApplicationCompanyInfo extends Model
 {
     use HasFactory;
 
@@ -17,17 +17,17 @@ class ApplicationSubLot extends Model
      */
     protected $fillable = [
         'application_id',
-        'sub_lot_id',
-        'choice',
+        'profile',
+        'description_of_products',
+        'short_term_objectives',
+        'medium_term_objectives',
+        'long_term_objectives',
+        'number_of_staff',
+        'organizational_chart',
     ];
 
     public function application(): BelongsTo
     {
         return $this->belongsTo(Application::class, "application_id", 'id');
-    }
-
-    public function sublot(): BelongsTo
-    {
-        return $this->belongsTo(SubLot::class, "sub_lot_id", 'id');
     }
 }

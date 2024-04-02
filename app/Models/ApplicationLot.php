@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ApplicationCurrentPosition extends Model
+class ApplicationLot extends Model
 {
     use HasFactory;
 
@@ -16,14 +16,18 @@ class ApplicationCurrentPosition extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'application_cv_id',
-        'position',
-        'description',
-        'start',
+        'application_id',
+        'lot_id',
+        'choice',
     ];
 
-    public function application_cv(): BelongsTo
+    public function application(): BelongsTo
     {
-        return $this->belongsTo(ApplicationCv::class, "application_cv_id", 'id');
+        return $this->belongsTo(Application::class, "application_id", 'id');
+    }
+
+    public function lot(): BelongsTo
+    {
+        return $this->belongsTo(Lot::class, "lot_id", 'id');
     }
 }
