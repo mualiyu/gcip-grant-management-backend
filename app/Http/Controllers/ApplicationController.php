@@ -641,7 +641,7 @@ class ApplicationController extends Controller
                 $app['application_eligibility'] = count($app_eligibility)>0 ? $app_eligibility[0] : [];
                 $app['application_documents'] = $app_docs;
                 $app['application_company_info'] = count($app_company_info)>0 ? $app_company_info[0] : [0];
-
+                $app['application_decisions'] = count($app_decisions)>0 ? $app_decisions : [];
                 $app['application_business_proposal'] = $app_business;
 
                 $app['jvs'] = $jvs;
@@ -661,6 +661,132 @@ class ApplicationController extends Controller
                 ], 422);
             }
 
+        }else{
+            return response()->json([
+                'status' => false,
+                'message' => trans('auth.failed')
+            ], 404);
+        }
+    }
+
+    public function make_decision(Request $request)
+    {
+        if ($request->user()->tokenCan('Admin')) {
+
+            $validator = Validator::make($request->all(), [
+                'application_id'=>'required',
+                'status'=>'required',
+                'concerns'=>'nullable',
+                'remark'=>'nullable',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first()
+                ], 422);
+            }
+
+            Application::where('id', $request->application_id)->update([
+                "status"=>$request->status,
+            ]);
+
+            $concerns = "";
+
+            if (isset($request->concerns)) {
+                if (count($request->concerns)>0) {
+                    foreach ($request->concerns as $key => $c) {
+                        $concerns.= $c."&";
+                    }
+                }
+            }
+
+            $add_app_decision = ApplicationDecision::create([
+                "application_id" => $request->application_id,
+                "status" => $request->status,
+                "concerns" => $concerns,
+                "remark" => $request->remark,
+            ]);
+
+            $app = Application::find($request->application_id);
+
+            if ($request->status == "2") {
+                $mailData = [
+                    'title' => 'GCIP - Your Application is Queried',
+                    'li' => [
+                        "Dear ".$app->applicant->name." ",
+                        '',
+                        "We would like to inform you that there is a query pertaining to your application for the Global Cleantech Innovation Programme. This query arises due to the following reasons:",
+                        '',
+                        $add_app_decision->remark,
+                        '',
+                        'To address these queries, we kindly request you to revisit the platform by clicking on the following link',
+                        '',
+                        'https://applicant.gcip.rea.gov.ng/',
+                        '',
+                        'Your prompt attention to resolving these queries is greatly appreciated.',
+                        '',
+                        'Best regards,',
+                    ],
+                ];
+                Mail::to($app->applicant->email)->send(new SubmitApplicationMail($mailData));
+            }
+            if ($request->status == "3") {
+                $mailData = [
+                    'title' => 'GCIP - Congratulation, Your Application is Successful.',
+                    'li' => [
+                        "Dear ".$app->applicant->name." ",
+                        '',
+                        "We are pleased to inform you that your application for the Prequalification of the Global Cleantech Innovation Programme has been successful! On behalf of our team, we extend our warmest congratulations on this achievement",
+                        '',
+                        'You will receive notification regarding the subsequent steps in due course.',
+                        '',
+                        'Warm Regards,',
+                    ],
+                ];
+                Mail::to($app->applicant->email)->send(new SubmitApplicationMail($mailData));
+            }
+            if ($request->status == "4") {
+                $mailData = [
+                    'title' => 'GCIP - Your Application is Unsuccessful.',
+                    'li' => [
+                        "Dear ".$app->applicant->name,
+                        '',
+                        "We appreciate the time and effort you put into applying for the Prequalification of the Global Cleantech Innovation Programme. After a thorough evaluation of your application, we regret to inform you that we are unable to proceed with your application due to the following reasons:",
+                        '',
+                        $add_app_decision->remark,
+                        '',
+                        'Thank you for your understanding and once again, we appreciate your interest.',
+                        '',
+                        'Warm Regards,',
+                    ],
+                ];
+                Mail::to($app->applicant->email)->send(new SubmitApplicationMail($mailData));
+            }
+
+            if ($request->status == "5") {
+                $mailData = [
+                    'title' => 'GCIP - Your Application is Under Review.',
+                    'li' => [
+                        "Dear ".$app->applicant->name,
+                        '',
+                        "We would like to inform you that your application for the Global Cleantech Innovation Programme is currently undergoing review.",
+                        '',
+                        'You will receive notification regarding the outcome of your application and the subsequent steps in due course.',
+                        "",
+                        'Best regards,',
+                    ],
+                ];
+                Mail::to($app->applicant->email)->send(new SubmitApplicationMail($mailData));
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => "You've made a decision successfully. An email has been sent to the applicant, Thank you.",
+                'data' => [
+                    "application"=>$add_app_decision
+                ]
+            ]);
         }else{
             return response()->json([
                 'status' => false,

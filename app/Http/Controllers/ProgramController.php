@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\ApplicantProjectDocument;
 use App\Models\Application;
+use App\Models\ApplicationBusinessProposal;
+use App\Models\ApplicationCompanyInfo;
 use App\Models\ApplicationCv;
 use App\Models\ApplicationDecision;
 use App\Models\ApplicationDocument;
+use App\Models\ApplicationEligibility;
 use App\Models\ApplicationFinancialDebtInfo;
 use App\Models\ApplicationFinancialInfo;
 use App\Models\ApplicationProfile;
@@ -366,49 +369,15 @@ class ProgramController extends Controller
                 ], 422);
             }
 
-            $app = Application::where(['applicant_id'=> $request->applicant_id, 'program_id'=>$request->program_id])->with("sublots")->get();
+            $app = Application::where(['applicant_id'=> $request->applicant_id, 'program_id'=>$request->program_id])->with("lots")->get();
             if (count($app)>0) {
                 $app = $app[0];
 
-                $app_profile = ApplicationProfile::where(["application_id"=>$app->id])->with('contact_persons')->with('share_holders')->get();
-                $app_staff = ApplicationCv::where(["application_id"=>$app->id])->with('employers')->with('current_position')->get();
-
-                $app_projects = ApplicationProject::where(["application_id"=>$app->id])->with('referees')->with('sub_contractors')->get();
-
-                $app_fin = ApplicationFinancialInfo::where(["application_id"=>$app->id])->get();
-                $app_fin_dept = ApplicationFinancialDebtInfo::where(["application_id"=>$app->id])->with('borrowers')->get();
-                $fin = [
-                    "financial_info" => $app_fin,
-                    "financial_dept_info" => $app_fin_dept
-                ];
-
-                $sublots = DB::table('application_sub_lot')->where('application_id', $app->id)->get();
-                if (count($sublots)>0) {
-                    $subs = [];
-
-                    foreach ($sublots as $sl) {
-
-                        $s_sublot = SubLot::where('id', $sl->sub_lot_id)->get();
-                        if (count($s_sublot)>0) {
-                            $s_s = $s_sublot[0];
-                            // return $s_s->name;
-                            $arr = [
-                                "sublot_id"=>$sl->sub_lot_id,
-                                "choice"=>$sl->choice,
-                                "sublot_name" => $s_s->name,
-                                // "sublot_category" => $s_s->category->name,
-                                "lot_name" => $s_s->lot->name,
-                                "lot_region" => $s_s->lot->region->name,
-                            ];
-
-                            array_push($subs, $arr);
-                        }
-                    }
-                }else{
-                    $subs = [];
-                }
-
+                $app_eligibility = ApplicationEligibility::where(["application_id"=>$app->id])->get();
                 $app_docs = ApplicationDocument::where(["application_id"=>$app->id])->get();
+                $app_company_info = ApplicationCompanyInfo::where(["application_id"=>$app->id])->get();
+                $app_business = ApplicationBusinessProposal::where(["application_id"=>$app->id])->get();
+
                 $app_decisions = ApplicationDecision::where(["application_id"=>$app->id])->get();
 
                 if (count($app_decisions)>0) {
@@ -418,39 +387,30 @@ class ProgramController extends Controller
                     }
                 }
 
-                if (count($app_profile)>0) {
-                    $app_profile[0]->authorised_personel = $app->applicant->person_incharge;
-                }
+                $jvs = $request->user()->jvs;
 
-                $jvs = $app->applicant->jvs;
-
-                $app['application_profile'] = count($app_profile)>0 ? $app_profile: [];
-                $app['application_staff'] = $app_staff;
-                $app['application_projects'] = $app_projects;
-
-                $app['application_financials'] = $fin;
+                $app['application_eligibility'] = count($app_eligibility)>0 ? $app_eligibility[0] : [];
                 $app['application_documents'] = $app_docs;
+                $app['application_company_info'] = count($app_company_info)>0 ? $app_company_info[0] : [0];
+                $app['application_business_proposal'] = $app_business;
                 $app['application_decisions'] = count($app_decisions)>0 ? $app_decisions : [];
-
-                $app['application_sublots'] = $subs;
 
                 $app['jvs'] = $jvs;
 
-                // $projects = $request->user()->projects;
-                $projects = $app->applicant->projects;
-                if (count($projects) > 0) {
-                    $proj = [];
-                    foreach ($projects as $p) {
-                        $pp = Project::where(['id' => $p->id])->with("project_documents")->with("project_requirements")->get()[0];
-                        $pp["applicant_uploaded_documents"] = ApplicantProjectDocument::where(["applicant_id" => $app->applicant->id, "project_id" => $pp->id])->get();
-                        array_push($proj, $pp);
-                    }
-                    $app['projects_allocated'] = $proj;
-                } else {
-                    $app['projects_allocated'] = [];
-                }
-
-                $app['proposal_id'] = count($app->applicant->proposal)>0 ? $app->applicant->proposal[0]->id : null;
+                // this is for the second stage of the tender process
+                // $projects = $app->applicant->projects;
+                // if (count($projects) > 0) {
+                //     $proj = [];
+                //     foreach ($projects as $p) {
+                //         $pp = Project::where(['id' => $p->id])->with("project_documents")->with("project_requirements")->get()[0];
+                //         $pp["applicant_uploaded_documents"] = ApplicantProjectDocument::where(["applicant_id" => $app->applicant->id, "project_id" => $pp->id])->get();
+                //         array_push($proj, $pp);
+                //     }
+                //     $app['projects_allocated'] = $proj;
+                // } else {
+                //     $app['projects_allocated'] = [];
+                // }
+                // $app['proposal_id'] = count($app->applicant->proposal)>0 ? $app->applicant->proposal[0]->id : null;
 
                 return response()->json([
                     'status' => true,

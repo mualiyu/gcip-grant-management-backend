@@ -65,9 +65,9 @@ Route::prefix('admin')->group(function () {
         // Applications Not done yet
         Route::middleware('auth:sanctum')->prefix('applications')->group(function () {
             #Get application
-            Route::get('getAll', [\App\Http\Controllers\ProgramController::class, 'getApplications']);
+            Route::get('get-all', [\App\Http\Controllers\ProgramController::class, 'getApplications']);
 
-            Route::get('getOne', [\App\Http\Controllers\ProgramController::class, 'getSingleApplication']);
+            Route::get('get-single-application', [\App\Http\Controllers\ProgramController::class, 'getSingleApplication']);
 
             Route::post('make-decision', [\App\Http\Controllers\ApplicationController::class, 'make_decision']);
 
