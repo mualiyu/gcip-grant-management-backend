@@ -175,6 +175,13 @@ class ApplicantController extends Controller
         if (!count($user)>0) {
             $user = Applicant::where('email', '=', $request->username)->get();
             // $user = Applicant::where('email', $request->username)->first();
+
+            if (!count($user)>0) {
+                return response()->json([
+                    'status' => false,
+                    'message' => "Sorry, user not found."
+                ], 422);
+            }
         }else{
             $user = Applicant::where('username', '=', $request->username)->get();
             // $user = Applicant::where('username', $request->username)->first();
@@ -201,7 +208,7 @@ class ApplicantController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => "Sorry, your Account is not activated, Try again later..."
-            ], 404);
+            ], 422);
 
         }
 
