@@ -642,7 +642,7 @@ class ApplicationController extends Controller
                 $app['application_documents'] = $app_docs;
                 $app['application_company_info'] = count($app_company_info)>0 ? $app_company_info[0] : [0];
                 $app['application_decisions'] = count($app_decisions)>0 ? $app_decisions : [];
-                $app['application_business_proposal'] = $app_business;
+                $app['application_business_proposal'] = count($app_business)>0 ? $app_business[0] : [];
 
                 $app['jvs'] = $jvs;
 
