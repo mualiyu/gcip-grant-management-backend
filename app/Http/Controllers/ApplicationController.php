@@ -40,18 +40,25 @@ class ApplicationController extends Controller
                 ], 422);
             }
 
-
-            if ($request->update == "1") {
-                $application = Application::where("id", $request->application_id)->get();
+            if (count(Application::where(['applicant_id' => $request->user()->id, 'program_id' => $request->program_id])->get()) > 0) {
+                $application = Application::where(['applicant_id' => $request->user()->id, 'program_id' => $request->program_id,])->get();
                 $application = $application[0];
 
                 DB::table("application_lot")->where("application_id", $application->id)->delete();
-            } else {
-                $application = Application::create([
-                    'applicant_id' => $request->user()->id,
-                    'program_id' => $request->program_id,
-                ]);
+            }else{
+                if ($request->update == "1") {
+                    $application = Application::where("id", $request->application_id)->get();
+                    $application = $application[0];
+
+                    DB::table("application_lot")->where("application_id", $application->id)->delete();
+                } else {
+                    $application = Application::create([
+                        'applicant_id' => $request->user()->id,
+                        'program_id' => $request->program_id,
+                    ]);
+                }
             }
+
 
             // conditions
             if (count($request->lots) > 2) {
