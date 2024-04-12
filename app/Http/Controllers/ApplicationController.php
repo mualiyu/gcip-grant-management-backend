@@ -645,11 +645,11 @@ class ApplicationController extends Controller
 
                 $jvs = $request->user()->jvs;
 
-                $app['application_eligibility'] = count($app_eligibility)>0 ? $app_eligibility[0] : [];
+                $app['application_eligibility'] = count($app_eligibility)>0 ? $app_eligibility[0] : null;
                 $app['application_documents'] = $app_docs;
-                $app['application_company_info'] = count($app_company_info)>0 ? $app_company_info[0] : [0];
+                $app['application_company_info'] = count($app_company_info)>0 ? $app_company_info[0] : null;
                 $app['application_decisions'] = count($app_decisions)>0 ? $app_decisions : [];
-                $app['application_business_proposal'] = count($app_business)>0 ? $app_business[0] : [];
+                $app['application_business_proposal'] = count($app_business)>0 ? $app_business[0] : null;
 
                 $app['jvs'] = $jvs;
 
