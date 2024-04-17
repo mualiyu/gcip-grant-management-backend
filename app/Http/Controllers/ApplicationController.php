@@ -203,12 +203,12 @@ class ApplicationController extends Controller
                 // ApplicationDocument::where("application_id", "=", $application->id)->delete();
             }
 
-            if (count($request->documents) > 12) {
-                return response()->json([
-                    'status' => false,
-                    'message' => "Failed, You cannot upload more than 12 document."
-                ], 422);
-            } else {
+            // if (count($request->documents) > 12) {
+            //     return response()->json([
+            //         'status' => false,
+            //         'message' => "Failed, You cannot upload more than 12 document."
+            //     ], 422);
+            // } else {
                 foreach ($request->documents as $key => $doc) {
                     $docc = ApplicationDocument::create([
                         "application_id" => $request->application_id,
@@ -221,7 +221,7 @@ class ApplicationController extends Controller
                     'message' => "Successful, Documents are added to application."
 
                 ]);
-            }
+            // }
         } else {
             return response()->json([
                 'status' => false,

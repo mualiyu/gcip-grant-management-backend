@@ -192,7 +192,7 @@ class ApplicantController extends Controller
             return response()->json([
                 'status' => false,
                 'message' => trans('auth.failed')
-            ], 404);
+            ], 422);
         }
 
         if ($user->isApproved==2) {
