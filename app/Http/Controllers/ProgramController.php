@@ -397,6 +397,12 @@ class ProgramController extends Controller
 
                 $app['jvs'] = $jvs;
 
+                foreach ($app['lots'] as $l) {
+
+                    $apl = DB::table("application_lot")->where(['application_id'=> $app->id, 'lot_id'=>$l->id])->get()[0];
+                    $l->choice = $apl->choice;
+                }
+
                 // this is for the second stage of the tender process
                 // $projects = $app->applicant->projects;
                 // if (count($projects) > 0) {
