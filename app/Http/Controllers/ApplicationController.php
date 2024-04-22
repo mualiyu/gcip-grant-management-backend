@@ -657,7 +657,8 @@ class ApplicationController extends Controller
                 $lots = $app['lots'];
 
                 foreach ($app['lots'] as $l) {
-                    $apl = ApplicationLot::where(['applicant_id'=> $request->user()->id, 'lot_id'=>$l->id])->get()[0];
+
+                    $apl = DB::table("application_lot")->where(['applicant_id'=> $request->user()->id, 'lot_id'=>$l->id])->get()[0];
                     $l->choice = $apl->choice;
                 }
 
