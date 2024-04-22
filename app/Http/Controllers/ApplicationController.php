@@ -10,6 +10,7 @@ use App\Models\ApplicationCompanyInfo;
 use App\Models\ApplicationDecision;
 use App\Models\ApplicationDocument;
 use App\Models\ApplicationEligibility;
+use App\Models\ApplicationLot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -64,7 +65,7 @@ class ApplicationController extends Controller
             if (count($request->lots) > 2) {
                 return response()->json([
                     'status' => false,
-                    'message' => "Can't choose more than 4 sublots.",
+                    'message' => "Can't choose more than 4 lots.",
                 ], 422);
             } else {
                 foreach ($request->lots as $key => $sub) {
@@ -652,6 +653,13 @@ class ApplicationController extends Controller
                 $app['application_business_proposal'] = count($app_business)>0 ? $app_business[0] : null;
 
                 $app['jvs'] = $jvs;
+
+                $lots = $app['lots'];
+
+                foreach ($app['lots'] as $l) {
+                    $apl = ApplicationLot::where(['applicant_id'=> $request->user()->id, 'lot_id'=>$l->id])->get()[0];
+                    $l->choice = $apl->choice;
+                }
 
                 return response()->json([
                     'status' => true,
