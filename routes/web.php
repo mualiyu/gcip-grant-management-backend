@@ -26,6 +26,10 @@ Route::get('/*', function () {
             ], 404);
 });
 
+Route::get('/tes/email-view', function () {
+    return view('mail.submitApplicationNotification');
+});
+
 
 Route::get('storage/{p}/{filename}', function ($p, $filename)
 {
