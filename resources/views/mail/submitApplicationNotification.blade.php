@@ -14,7 +14,7 @@
     <tr>
       <td align="center" style="padding:0;">
         <table role="presentation" style="width:602px;border-collapse:collapse;border:1px solid #cccccc;border-spacing:0;text-align:left;">
-            <tr>
+            {{-- <tr>
                 <td align="center" style="padding:20px 0 30px 0;background:;">
                     <span width="100" style="height:auto;display:block;">
                         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="250" height="auto" style="position: relative;">
@@ -93,7 +93,7 @@
                             </svg>
                     </span>
                 </td>
-              </tr>
+              </tr> --}}
 
               <tr align="center">
                 <td align="center" style="padding:40px 0 30px 0;background:;">
