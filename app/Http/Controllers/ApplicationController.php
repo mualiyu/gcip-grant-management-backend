@@ -169,7 +169,7 @@ class ApplicationController extends Controller
         } else {
             return response()->json([
                 'status' => false,
-                'message' => trans('auth.failed')
+                'message' => "failed to authenticate"
             ], 404);
         }
     }
