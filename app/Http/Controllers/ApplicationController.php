@@ -876,9 +876,9 @@ class ApplicationController extends Controller
                             $baseP = basename($pathP);
                             $baseP = explode('.', $baseP);
                             $baseP = end($baseP);
-                            $relativeNameP =  $applicant->name."-(ORGANIZATIONAL CHART).".$baseP;//basename($path);
+                            $relativeNameP =  $applicant->name."-(ORGANIZATIONAL_CHART).".$baseP;//basename($path);
 
-                            $zip->addFile($pathP, 'Company Files/'.$applicant->name.'/'.$relativeNameP);
+                            $zip->addFile($pathP, 'CompanyFiles/'.$applicant->name.'/'.$relativeNameP);
                         }
                     }
                 }
@@ -894,7 +894,7 @@ class ApplicationController extends Controller
                     $baseP = end($baseP);
                     $relativeNameP =  $applicant->name."-CAC_certificate.".$baseP;//basename($path);
 
-                    $zip->addFile($pathP, 'profile Files/'.$relativeNameP);
+                    $zip->addFile($pathP, 'profileFiles/'.$relativeNameP);
                 }
                 //add tax clearance
                 if ($applicant->tax_clearance_certificate !== null) {
@@ -907,7 +907,7 @@ class ApplicationController extends Controller
                     $basePp = end($basePp);
                     $relativeNamePp =  $applicant->name."-TAX_clearance.".$basePp;//basename($path);
 
-                    $zip->addFile($pathPp, 'profile Files/'.$relativeNamePp);
+                    $zip->addFile($pathPp, 'profileFiles/'.$relativeNamePp);
                 }
 
 
