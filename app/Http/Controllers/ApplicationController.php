@@ -861,7 +861,7 @@ class ApplicationController extends Controller
                         }
                         $relativeName =  substr($file->name, 0, 55).".".$base;//basename($path);
 
-                        $zip->addFile($path, 'Uploads/'.$relativeName);
+                        $zip->addFile($path, 'uploads/'.$relativeName);
                     }
                 }
 
@@ -878,7 +878,7 @@ class ApplicationController extends Controller
                             $baseP = end($baseP);
                             $relativeNameP =  $applicant->name."-(ORGANIZATIONAL_CHART).".$baseP;//basename($path);
 
-                            $zip->addFile($pathP, 'CompanyFiles/'.$applicant->name.'/'.$relativeNameP);
+                            $zip->addFile($pathP, 'companyFiles/'.$applicant->name.'/'.$relativeNameP);
                         }
                     }
                 }
@@ -981,7 +981,9 @@ class ApplicationController extends Controller
                 //     }
                 // }
 
-                $zip->close();
+                // $zip->close();
+                $ret = $zip->close();
+                return "Closed with: " . ($ret ? "true" : "false") . "\n";
             }
 
             return response()->download(storage_path('app/public/'.$fileName));
