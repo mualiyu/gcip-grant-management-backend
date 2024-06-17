@@ -911,7 +911,7 @@ class ApplicationController extends Controller
                     $zip->addFile($pathPp, 'profileFiles/'.$relativeNamePp);
                 }
 
-                return $zip->close();
+                $zip->close();
                 // $ret = $zip->close();
                 // return "Closed with: " . ($ret ? "true" : "false") . "\n";
             }
