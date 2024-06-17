@@ -911,80 +911,9 @@ class ApplicationController extends Controller
                     $zip->addFile($pathPp, 'profileFiles/'.$relativeNamePp);
                 }
 
-
-                // jvs
-                // $jvs = $applicant->jvs;
-                // if (count($jvs)>0) {
-                //     foreach ($jvs as $s){
-                //         if (($s->evidence_of_cac !== null) || !empty($s->evidence_of_cac)) {
-                //             $docP = explode("/", $s->evidence_of_cac);
-                //             $dP = end($docP);
-
-                //             $pathP =  storage_path('app/public/projectFiles/'.$dP);
-                //             $baseP = basename($pathP);
-                //             $baseP = explode('.', $baseP);
-                //             $baseP = end($baseP);
-                //             $relativeNameP = "(evidence_of_cac).".$baseP;//basename($path);
-
-                //             $zip->addFile($pathP, 'JV/'.$s->name.'/'.$relativeNameP);
-                //         }
-
-                //         if (($s->company_income_tax !== null) || !empty($s->company_income_tax)) {
-                //             $docP = explode("/", $s->company_income_tax);
-                //             $dP = end($docP);
-
-                //             $pathP =  storage_path('app/public/projectFiles/'.$dP);
-                //             $baseP = basename($pathP);
-                //             $baseP = explode('.', $baseP);
-                //             $baseP = end($baseP);
-                //             $relativeNameP = "(company_income_tax).".$baseP;//basename($path);
-
-                //             $zip->addFile($pathP, 'JV/'.$s->name.'/'.$relativeNameP);
-                //         }
-                //         if (($s->audited_account !== null) || !empty($s->audited_account)) {
-                //             $docP = explode("/", $s->audited_account);
-                //             $dP = end($docP);
-
-                //             $pathP =  storage_path('app/public/projectFiles/'.$dP);
-                //             $baseP = basename($pathP);
-                //             $baseP = explode('.', $baseP);
-                //             $baseP = end($baseP);
-                //             $relativeNameP = "(audited_account).".$baseP;//basename($path);
-
-                //             $zip->addFile($pathP, 'JV/'.$s->name.'/'.$relativeNameP);
-                //         }
-
-                //         if (($s->letter_of_authorization !== null) || !empty($s->letter_of_authorization)) {
-                //             $docP = explode("/", $s->letter_of_authorization);
-                //             $dP = end($docP);
-
-                //             $pathP =  storage_path('app/public/projectFiles/'.$dP);
-                //             $baseP = basename($pathP);
-                //             $baseP = explode('.', $baseP);
-                //             $baseP = end($baseP);
-                //             $relativeNameP = "(letter_of_authorization).".$baseP;//basename($path);
-
-                //             $zip->addFile($pathP, 'JV/'.$s->name.'/'.$relativeNameP);
-                //         }
-
-                //         if (($s->sworn_affidavits !== null) || !empty($s->sworn_affidavits)) {
-                //             $docP = explode("/", $s->sworn_affidavits);
-                //             $dP = end($docP);
-
-                //             $pathP =  storage_path('app/public/projectFiles/'.$dP);
-                //             $baseP = basename($pathP);
-                //             $baseP = explode('.', $baseP);
-                //             $baseP = end($baseP);
-                //             $relativeNameP = "(sworn_affidavits).".$baseP;//basename($path);
-
-                //             $zip->addFile($pathP, 'JV/'.$s->name.'/'.$relativeNameP);
-                //         }
-                //     }
-                // }
-
-                // $zip->close();
-                $ret = $zip->close();
-                return "Closed with: " . ($ret ? "true" : "false") . "\n";
+                return $zip->close();
+                // $ret = $zip->close();
+                // return "Closed with: " . ($ret ? "true" : "false") . "\n";
             }
 
             return response()->download(storage_path('app/public/'.$fileName));
