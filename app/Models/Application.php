@@ -50,5 +50,10 @@ class Application extends Model
         return $this->hasMany(ApplicationDocument::class, "application_id", 'id');
     }
 
+    public function app_company_info(): HasMany
+    {
+        return $this->hasMany(ApplicationCompanyInfo::class, "application_id", 'id');
+    }
+
 
 }

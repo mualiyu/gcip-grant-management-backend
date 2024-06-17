@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use ZipArchive;
 
 class ApplicationController extends Controller
 {
@@ -809,5 +810,187 @@ class ApplicationController extends Controller
                 'message' => trans('auth.failed')
             ], 404);
         }
+
+    }
+
+
+    // Document dowload logic
+    public function downloadApplicationDocuments(Request $request)
+    {
+        // if ($request->user()->tokenCan('Admin')) {
+
+            $validator = Validator::make($request->all(), [
+                'application'=>'required|integer',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first()
+                ], 422);
+            }
+
+            $application = Application::find($request->application);
+            $applicant = $application->applicant;
+
+            $docs = $application->app_document;
+
+            $zip = new ZipArchive;
+
+            $fileName = 'applicants_documents_zip/'.$applicant->name.'-Application_Docs.zip';
+
+            if (true === ($zip->open(storage_path('app/public/'.$fileName), ZipArchive::CREATE | ZipArchive::OVERWRITE))) {
+                $docs = $application->app_document;
+                if (count($docs)>0) {
+                    foreach ($docs as $file){
+                        $doc = explode("/", $file->url);
+                        $d = end($doc);
+
+                        $path =  storage_path('app/public/documentFiles/'.$d);
+                        $base = basename($path);
+                        $base = explode('.', $base);
+                        $base = end($base);
+
+                        if (strpos($file->name, "/") !== false) {
+                            $f =explode('/', $file->name);
+                            $rr = "";
+                            foreach ($f as $g) {
+                                $rr.=$g." or ";
+                            }
+                            $file->name = $rr;
+                        }
+                        $relativeName =  substr($file->name, 0, 55).".".$base;//basename($path);
+
+                        $zip->addFile($path, 'Uploads/'.$relativeName);
+                    }
+                }
+
+                $company = $application->app_company_info;
+                if (count($company)>0) {
+                    foreach ($company as $c){
+                        if ($c->organizational_chart !== null) {
+                            $docP = explode("/", $c->organizational_chart);
+                            $dP = end($docP);
+
+                            $pathP =  storage_path('app/public/companyFiles/'.$dP);
+                            $baseP = basename($pathP);
+                            $baseP = explode('.', $baseP);
+                            $baseP = end($baseP);
+                            $relativeNameP =  $applicant->name."-(ORGANIZATIONAL CHART).".$baseP;//basename($path);
+
+                            $zip->addFile($pathP, 'Company Files/'.$applicant->name.'/'.$relativeNameP);
+                        }
+                    }
+                }
+
+                // Add cac certificate
+                if ($applicant->cac_certificate !== null) {
+                    $docP = explode("/", $applicant->cac_certificate);
+                    $dP = end($docP);
+
+                    $pathP =  storage_path('app/public/profileFiles/'.$dP);
+                    $baseP = basename($pathP);
+                    $baseP = explode('.', $baseP);
+                    $baseP = end($baseP);
+                    $relativeNameP =  $applicant->name."-CAC_certificate.".$baseP;//basename($path);
+
+                    $zip->addFile($pathP, 'profile Files/'.$relativeNameP);
+                }
+                //add tax clearance
+                if ($applicant->tax_clearance_certificate !== null) {
+                    $docPp = explode("/", $applicant->tax_clearance_certificate);
+                    $dPp = end($docPp);
+
+                    $pathPp =  storage_path('app/public/profileFiles/'.$dPp);
+                    $basePp = basename($pathPp);
+                    $basePp = explode('.', $basePp);
+                    $basePp = end($basePp);
+                    $relativeNamePp =  $applicant->name."-TAX_clearance.".$basePp;//basename($path);
+
+                    $zip->addFile($pathPp, 'profile Files/'.$relativeNamePp);
+                }
+
+
+                // jvs
+                // $jvs = $applicant->jvs;
+                // if (count($jvs)>0) {
+                //     foreach ($jvs as $s){
+                //         if (($s->evidence_of_cac !== null) || !empty($s->evidence_of_cac)) {
+                //             $docP = explode("/", $s->evidence_of_cac);
+                //             $dP = end($docP);
+
+                //             $pathP =  storage_path('app/public/projectFiles/'.$dP);
+                //             $baseP = basename($pathP);
+                //             $baseP = explode('.', $baseP);
+                //             $baseP = end($baseP);
+                //             $relativeNameP = "(evidence_of_cac).".$baseP;//basename($path);
+
+                //             $zip->addFile($pathP, 'JV/'.$s->name.'/'.$relativeNameP);
+                //         }
+
+                //         if (($s->company_income_tax !== null) || !empty($s->company_income_tax)) {
+                //             $docP = explode("/", $s->company_income_tax);
+                //             $dP = end($docP);
+
+                //             $pathP =  storage_path('app/public/projectFiles/'.$dP);
+                //             $baseP = basename($pathP);
+                //             $baseP = explode('.', $baseP);
+                //             $baseP = end($baseP);
+                //             $relativeNameP = "(company_income_tax).".$baseP;//basename($path);
+
+                //             $zip->addFile($pathP, 'JV/'.$s->name.'/'.$relativeNameP);
+                //         }
+                //         if (($s->audited_account !== null) || !empty($s->audited_account)) {
+                //             $docP = explode("/", $s->audited_account);
+                //             $dP = end($docP);
+
+                //             $pathP =  storage_path('app/public/projectFiles/'.$dP);
+                //             $baseP = basename($pathP);
+                //             $baseP = explode('.', $baseP);
+                //             $baseP = end($baseP);
+                //             $relativeNameP = "(audited_account).".$baseP;//basename($path);
+
+                //             $zip->addFile($pathP, 'JV/'.$s->name.'/'.$relativeNameP);
+                //         }
+
+                //         if (($s->letter_of_authorization !== null) || !empty($s->letter_of_authorization)) {
+                //             $docP = explode("/", $s->letter_of_authorization);
+                //             $dP = end($docP);
+
+                //             $pathP =  storage_path('app/public/projectFiles/'.$dP);
+                //             $baseP = basename($pathP);
+                //             $baseP = explode('.', $baseP);
+                //             $baseP = end($baseP);
+                //             $relativeNameP = "(letter_of_authorization).".$baseP;//basename($path);
+
+                //             $zip->addFile($pathP, 'JV/'.$s->name.'/'.$relativeNameP);
+                //         }
+
+                //         if (($s->sworn_affidavits !== null) || !empty($s->sworn_affidavits)) {
+                //             $docP = explode("/", $s->sworn_affidavits);
+                //             $dP = end($docP);
+
+                //             $pathP =  storage_path('app/public/projectFiles/'.$dP);
+                //             $baseP = basename($pathP);
+                //             $baseP = explode('.', $baseP);
+                //             $baseP = end($baseP);
+                //             $relativeNameP = "(sworn_affidavits).".$baseP;//basename($path);
+
+                //             $zip->addFile($pathP, 'JV/'.$s->name.'/'.$relativeNameP);
+                //         }
+                //     }
+                // }
+
+                $zip->close();
+            }
+
+            return response()->download(storage_path('app/public/'.$fileName));
+
+        // } else {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => trans('auth.failed')
+        //     ], 404);
+        // }
     }
 }
