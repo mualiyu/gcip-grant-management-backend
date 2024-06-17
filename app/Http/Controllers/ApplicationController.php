@@ -840,62 +840,63 @@ class ApplicationController extends Controller
             $fileName = 'applicants_documents_zip/'.$applicant->name.'-Application_Docs.zip';
 
             if (true === ($zip->open(storage_path('app/public/'.$fileName), ZipArchive::CREATE | ZipArchive::OVERWRITE))) {
-                $docs = $application->app_document;
-                if (count($docs)>0) {
-                    foreach ($docs as $file){
-                        $doc = explode("/", $file->url);
-                        $d = end($doc);
+                // $docs = $application->app_document;
+                // if (count($docs)>0) {
+                //     foreach ($docs as $file){
+                //         $doc = explode("/", $file->url);
+                //         $d = end($doc);
 
-                        $path =  storage_path('app/public/documentFiles/'.$d);
-                        $base = basename($path);
-                        $base = explode('.', $base);
-                        $base = end($base);
+                //         $path =  storage_path('app/public/documentFiles/'.$d);
+                //         $base = basename($path);
+                //         $base = explode('.', $base);
+                //         $base = end($base);
 
-                        if (strpos($file->name, "/") !== false) {
-                            $f =explode('/', $file->name);
-                            $rr = "";
-                            foreach ($f as $g) {
-                                $rr.=$g." or ";
-                            }
-                            $file->name = $rr;
-                        }
-                        $relativeName =  substr($file->name, 0, 55).".".$base;//basename($path);
+                //         if (strpos($file->name, "/") !== false) {
+                //             $f =explode('/', $file->name);
+                //             $rr = "";
+                //             foreach ($f as $g) {
+                //                 $rr.=$g." or ";
+                //             }
+                //             $file->name = $rr;
+                //         }
+                //         $relativeName =  substr($file->name, 0, 55).".".$base;//basename($path);
 
-                        $zip->addFile($path, 'uploads/'.$relativeName);
-                    }
-                }
+                //         $zip->addFile($path, 'uploads/'.$relativeName);
+                //     }
+                // }
 
-                $company = $application->app_company_info;
-                if (count($company)>0) {
-                    foreach ($company as $c){
-                        if ($c->organizational_chart !== null) {
-                            $docP = explode("/", $c->organizational_chart);
-                            $dP = end($docP);
+                // $company = $application->app_company_info;
+                // if (count($company)>0) {
+                //     foreach ($company as $c){
+                //         if ($c->organizational_chart !== null) {
+                //             $docP = explode("/", $c->organizational_chart);
+                //             $dP = end($docP);
 
-                            $pathP =  storage_path('app/public/companyFiles/'.$dP);
-                            $baseP = basename($pathP);
-                            $baseP = explode('.', $baseP);
-                            $baseP = end($baseP);
-                            $relativeNameP =  $applicant->name."-(ORGANIZATIONAL_CHART).".$baseP;//basename($path);
+                //             $pathP =  storage_path('app/public/companyFiles/'.$dP);
+                //             $baseP = basename($pathP);
+                //             $baseP = explode('.', $baseP);
+                //             $baseP = end($baseP);
+                //             $relativeNameP =  $applicant->name."-(ORGANIZATIONAL_CHART).".$baseP;//basename($path);
 
-                            $zip->addFile($pathP, 'companyFiles/'.$applicant->name.'/'.$relativeNameP);
-                        }
-                    }
-                }
+                //             $zip->addFile($pathP, 'companyFiles/'.$applicant->name.'/'.$relativeNameP);
+                //         }
+                //     }
+                // }
 
-                // Add cac certificate
-                if ($applicant->cac_certificate !== null) {
-                    $docP = explode("/", $applicant->cac_certificate);
-                    $dP = end($docP);
+                // // Add cac certificate
+                // if ($applicant->cac_certificate !== null) {
+                //     $docP = explode("/", $applicant->cac_certificate);
+                //     $dP = end($docP);
 
-                    $pathP =  storage_path('app/public/profileFiles/'.$dP);
-                    $baseP = basename($pathP);
-                    $baseP = explode('.', $baseP);
-                    $baseP = end($baseP);
-                    $relativeNameP =  $applicant->name."-CAC_certificate.".$baseP;//basename($path);
+                //     $pathP =  storage_path('app/public/profileFiles/'.$dP);
+                //     $baseP = basename($pathP);
+                //     $baseP = explode('.', $baseP);
+                //     $baseP = end($baseP);
+                //     $relativeNameP =  $applicant->name."-CAC_certificate.".$baseP;//basename($path);
 
-                    $zip->addFile($pathP, 'profileFiles/'.$relativeNameP);
-                }
+                //     $zip->addFile($pathP, 'profileFiles/'.$relativeNameP);
+                // }
+
                 //add tax clearance
                 if ($applicant->tax_clearance_certificate !== null) {
                     $docPp = explode("/", $applicant->tax_clearance_certificate);
